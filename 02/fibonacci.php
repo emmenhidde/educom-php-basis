@@ -10,3 +10,4 @@ for ($i = 0; $i < 20; $i++)  {
     $lastNum= $addNum;
     $addNum = $totalBoth;
 }
+?>
