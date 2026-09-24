@@ -13,11 +13,12 @@ for ($i = 0; $i <= 10; $i++) {
 echo "<br><br>"."First 10 decimals of Pi"."<br>";
 $strPi = strval(M_PI);
 for ($val = 2; $val < 12; $val++) {
+
+    echo $strPi[$val];
+    
     if ($val != 11) {
-        echo $strPi[$val]. ", ";
-    } else {
-        echo $strPi[$val];
-    }    
+        echo  ", ";
+    }   
 }
 
 ?>

@@ -12,4 +12,6 @@ foreach ($pets as $key => $value) {
     echo "$key + $value" ."<br>";
 }
 
+echo $pets["nummer4"];
+
 ?>

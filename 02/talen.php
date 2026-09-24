@@ -22,7 +22,7 @@ $talen = [
 
 sort($talen);
 for ($i = 0; $i < count($talen); $i++) {
-    echo $talen[$i], ", ";
+    echo $talen[$i], ", "."<br>";
 }
-
+	
 ?>
