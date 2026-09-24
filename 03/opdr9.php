@@ -19,3 +19,5 @@ for ($val = 2; $val < 12; $val++) {
         echo $strPi[$val];
     }    
 }
+
+?>
