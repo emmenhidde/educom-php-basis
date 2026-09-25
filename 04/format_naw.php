@@ -1,20 +1,26 @@
 <?php
 
-if ($_SERVER["REQUEST_METHOD"] == "POST"){
-    // voeg validatie toe op voornaam met foutmelding als deze niet in is gevuld
+$voornaamError = "";
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (empty($_POST['voornaam'])) {
+        $voornaamError = "Vul alstublieft uw voornaam in.<br><br>";
+    }
 }
 
 function format_naw($voornaam, $achternaam, $adres, $postcode, $woonplaats)
 {
-	return "Naam: " . "<b>" . htmlspecialchars($voornaam . ' ' . $achternaam) . "</b>" . '<br>' .
-		"Adres: " . "<b>" . htmlspecialchars($adres). "</b>" . '<br>' .
-		"Postcode en woonplaats: " . "<b>" . htmlspecialchars($postcode . ' ' . $woonplaats) . "</b>";
+	return "Naam: " . "<b>" . htmlspecialchars(trim($voornaam)) . ' ' . htmlspecialchars(trim($achternaam)) . "</b>" . '<br>' .
+		"Adres: " . "<b>" . htmlspecialchars(trim($adres)). "</b>" . '<br>' .
+		"Postcode en woonplaats: " . "<b>" . htmlspecialchars(trim($postcode)) . ' ' . htmlspecialchars(trim($woonplaats)) . "</b>";
 }
 ?>
 
 <form method="post">
     <label>Voornaam:</label>
-    <input type="text" name="voornaam" required><br><br>
+    <input type="text" name="voornaam" ><br><br>
+    <span style="color:red;">
+        <?php echo $voornaamError; ?>
+    </span>
 
     <label>Achternaam:</label>
     <input type="text" name="achternaam"><br><br>
@@ -34,12 +40,15 @@ function format_naw($voornaam, $achternaam, $adres, $postcode, $woonplaats)
 
 <?php
 
-echo format_naw(
-    $_POST['voornaam'] ?? '',
-    $_POST['achternaam'] ?? '',
-    $_POST['adres'] ?? '',
-    $_POST['postcode'] ?? '',
-    $_POST['woonplaats'] ?? ''
-);
+if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST['voornaam'])) {
+
+    echo format_naw(
+        $_POST['voornaam'] ?? '',
+        $_POST['achternaam'] ?? '',
+        $_POST['adres'] ?? '',
+        $_POST['postcode'] ?? '',
+        $_POST['woonplaats'] ?? ''
+    );
+}
 
 ?>
