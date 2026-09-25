@@ -1,5 +1,5 @@
 <?php
-$pagina = $_GET['page'] ?? 'starters';
+$pagina = $_POST['page'] ?? 'starters';
 
 $menu = [
     'starters' => [
@@ -54,7 +54,7 @@ $huidigePagina = $menu[$pagina];
 
 <?php foreach ($menu as $key => $categorie): ?>
 
-    <form method="get" style="display:inline;">
+    <form method="post" style="display:inline;">
         <button type="submit" name="page" value="<?= $key ?>">
             <?= $categorie['titel'] ?>
         </button>

@@ -1,4 +1,9 @@
 <?php
+
+if ($_SERVER["REQUEST_METHOD"] == "POST"){
+    // voeg validatie toe op voornaam met foutmelding als deze niet in is gevuld
+}
+
 function format_naw($voornaam, $achternaam, $adres, $postcode, $woonplaats)
 {
 	return "Naam: " . "<b>" . htmlspecialchars($voornaam . ' ' . $achternaam) . "</b>" . '<br>' .
@@ -9,7 +14,7 @@ function format_naw($voornaam, $achternaam, $adres, $postcode, $woonplaats)
 
 <form method="post">
     <label>Voornaam:</label>
-    <input type="text" name="voornaam"><br><br>
+    <input type="text" name="voornaam" required><br><br>
 
     <label>Achternaam:</label>
     <input type="text" name="achternaam"><br><br>
