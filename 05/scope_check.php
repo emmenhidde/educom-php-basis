@@ -10,11 +10,13 @@ echo $a. " Nu toont hij wel 6<br>";
 
 $naam = "Hidde";
 
-function toonNaam() {
+function toonNaam($naam = "") {
+    if (isset($naam))
+        return;
     echo "Deze zal de var voor \$naam niet kunnen printen.
     <br>Deze is namelijk buiten de functie aangemaakt"  . $naam;   // Geeft een Error dat variable mist
 }
 
-toonNaam();
+toonNaam(null);
 
 ?>
