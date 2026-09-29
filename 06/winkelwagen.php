@@ -13,7 +13,6 @@ session_set_cookie_params([
 
 session_start();
 
-// Sessie sluiten na 1 week inactiviteit
 if (
     isset($_SESSION['last_activity']) &&
     time() - $_SESSION['last_activity'] > $oneWeek
@@ -23,6 +22,10 @@ if (
 
 $_SESSION['last_activity'] = time();
 
+if (!isset($_SESSION['cart'])) {
+    $_SESSION['cart'] = [];
+}
+
 $producten = [
     "Brood" => 2.50,
     "Broccoli" => 1.75,
@@ -31,29 +34,25 @@ $producten = [
     "Pasta" => 1.80
 ];
 
-if (!isset($_SESSION['cart'])) {
-    $_SESSION['cart'] = [];
-}
-
 // Product toevoegen
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
+if (
+    $_SERVER['REQUEST_METHOD'] === 'POST' &&
+    ($_POST['action'] ?? '') === 'add'
+) {
     $product = $_POST['product'] ?? '';
 
-    if (isset($producten[$product])) {
+    if (is_string($product) && isset($producten[$product])) {
+        $toegevoegdAantal = $_SESSION['cart'][$product]['amount'] ?? 0;
+        $toegevoegdAantal++;
 
-        if (isset($_SESSION['cart'][$product])) {
-
-            $_SESSION['cart'][$product]['amount']++;
-
-        } else {
-
-            $_SESSION['cart'][$product] = [
-                'amount' => 1,
-                'price' => $producten[$product]
-            ];
-        }
+        $_SESSION['cart'][$product] = [
+            'amount' => $toegevoegdAantal,
+            'price' => $producten[$product]
+        ];
     }
+
+    header('Location: winkelwagen.php', true, 303);
+    exit;
 }
 
 ?>
@@ -62,34 +61,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <?php foreach ($producten as $product => $price): ?>
 
-    <form method="post">
+    <?php
+    $toegevoegdAantal = $_SESSION['cart'][$product]['amount'] ?? 0;
+    ?>
 
-        <?php echo $product; ?>
+    <form method="post" action="winkelwagen.php">
 
-        -
-        €<?php echo number_format($price, 2, ',', '.'); ?>
+        <?php echo htmlspecialchars($product, ENT_QUOTES, 'UTF-8'); ?>
 
-        <button
-            type="submit"
+        - €<?php echo number_format($price, 2, ',', '.'); ?>
+
+        <input
+            type="hidden"
             name="product"
-            value="<?php echo $product; ?>">
+            value="<?php echo htmlspecialchars($product, ENT_QUOTES, 'UTF-8'); ?>"
+        >
+
+        <button type="submit" name="action" value="add">
             Voeg toe
         </button>
+
+        <?php if ($toegevoegdAantal > 0): ?>
+            <span><?php echo $toegevoegdAantal; ?>x</span>
+        <?php endif; ?>
 
     </form>
 
 <?php endforeach; ?>
 
-<h2>Winkelwagen</h2>
-
-<?php foreach ($_SESSION['cart'] as $product => $item): ?>
-
-    <?php echo $product . ": " . $item['amount']; ?>
-
-    <br>
-
-<?php endforeach; ?>
-
-<br>
-
-<a href="cart.php">Bekijk winkelwagen</a>
+<br><a href="cart.php">Bekijk winkelwagen</a>
