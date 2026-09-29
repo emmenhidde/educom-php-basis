@@ -52,7 +52,6 @@ if (
     }
 
     header('Location: winkelwagen.php', true, 303);
-    exit;
 }
 
 ?>
@@ -77,7 +76,7 @@ if (
             value="<?php echo htmlspecialchars($product, ENT_QUOTES, 'UTF-8'); ?>"
         >
 
-        <button type="submit" name="action" value="add">
+        <button type="submit" name="action" value="add" >
             Voeg toe
         </button>
 

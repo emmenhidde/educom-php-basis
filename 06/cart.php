@@ -4,7 +4,7 @@ $oneWeek = 60 * 60 * 24 * 7;
 
 ini_set('session.gc_maxlifetime', $oneWeek);
 
-session_set_cookie_params([
+session_set_cookie_params([ // zou niet nofdig moeten zijn voor deze functionaliteit
     'lifetime' => $oneWeek,
     'path' => '/',
     'httponly' => true,
@@ -89,7 +89,8 @@ $total = 0;
     <p>Je winkelwagen is leeg.</p>
 
 <?php else: ?>
-
+// het is van belang dat de user niet in staat is de state van de session aan kan passen
+// zorg dat prijsinfoarmatie vanuit de waarheid op te halen is en niet aan de client kant te manipuleren is.
     <?php foreach ($_SESSION['cart'] as $product => $item): ?>
 
         <?php
