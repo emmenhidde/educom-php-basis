@@ -35,20 +35,55 @@ if (isset($_POST["logout"])) {
     exit;
 }
 
-// Item toevoegen
+// Items verzamelen in de winkelwagen
 if (isset($_POST["add"]) && isset($_SESSION["user_id"])) {
     $itemId = (int) ($_POST["item_id"] ?? 0);
 
     if ($itemId > 0) {
-        $statement = $pdo->prepare(
-            "INSERT INTO orders (user_id, item_id)
-             VALUES (?, ?)"
-        );
-        $statement->execute([$_SESSION["user_id"], $itemId]);
+        $statement = $pdo->prepare("SELECT item_id FROM items WHERE item_id = ?");
+        $statement->execute([$itemId]);
+
+        if ($statement->fetch()) {
+            $_SESSION["cart"][$itemId] = ($_SESSION["cart"][$itemId] ?? 0) + 1;
+        }
     }
 
     header("Location: userDBtable.php");
     exit;
+}
+
+// De winkelwagen opslaan als een volledige order
+if (isset($_POST["checkout"]) && isset($_SESSION["user_id"])) {
+    $cart = $_SESSION["cart"] ?? [];
+
+    if (!empty($cart)) {
+        try {
+            $pdo->beginTransaction();
+
+            $statement = $pdo->prepare("INSERT INTO orders (user_id) VALUES (?)");
+            $statement->execute([$_SESSION["user_id"]]);
+            $orderId = $pdo->lastInsertId();
+
+            $statement = $pdo->prepare(
+                "INSERT INTO order_items (order_id, item_id, quantity)
+                 VALUES (?, ?, ?)"
+            );
+
+            foreach ($cart as $itemId => $quantity) {
+                $statement->execute([$orderId, $itemId, $quantity]);
+            }
+
+            $pdo->commit();
+            unset($_SESSION["cart"]);
+            header("Location: userDBtable.php");
+            exit;
+        } catch (PDOException $exception) {
+            if ($pdo->inTransaction()) {
+                $pdo->rollBack();
+            }
+            $error = "Bestelling opslaan is niet gelukt.";
+        }
+    }
 }
 
 ?>
@@ -82,6 +117,10 @@ if (isset($_POST["add"]) && isset($_SESSION["user_id"])) {
         <?php echo htmlspecialchars($_SESSION["username"]); ?>
     </h2>
 
+    <?php if ($error !== ""): ?>
+        <p><?php echo htmlspecialchars($error); ?></p>
+    <?php endif; ?>
+
     <form method="post">
         <button type="submit" name="logout">Uitloggen</button>
     </form>
@@ -89,7 +128,7 @@ if (isset($_POST["add"]) && isset($_SESSION["user_id"])) {
     <h2>Items</h2>
 
     <?php
-    $items = $pdo->query("SELECT * FROM items");
+    $items = $pdo->query("SELECT * FROM items")->fetchAll();
 
     foreach ($items as $item):
     ?>
@@ -110,28 +149,58 @@ if (isset($_POST["add"]) && isset($_SESSION["user_id"])) {
 
     <?php endforeach; ?>
 
-    <h2>Toegevoegde items</h2>
+    <h2>Winkelwagen</h2>
+
+    <?php $cart = $_SESSION["cart"] ?? []; ?>
+
+    <?php if (empty($cart)): ?>
+        <p>Je winkelwagen is leeg.</p>
+    <?php else: ?>
+        <?php foreach ($items as $item): ?>
+            <?php if (isset($cart[$item["item_id"]])): ?>
+                <p>
+                    <?php echo htmlspecialchars($item["name"]); ?>
+                    - <?php echo (int) $cart[$item["item_id"]]; ?>x
+                    (€<?php echo number_format($item["price"] * $cart[$item["item_id"]], 2, ",", "."); ?>)
+                </p>
+            <?php endif; ?>
+        <?php endforeach; ?>
+
+        <form method="post">
+            <button type="submit" name="checkout">Bestelling plaatsen</button>
+        </form>
+    <?php endif; ?>
+
+    <h2>Bestellingen</h2>
 
     <?php
     $statement = $pdo->prepare(
-        "SELECT items.name, items.price
+        "SELECT orders.order_id, items.name, order_items.quantity
          FROM orders
-         JOIN items ON orders.item_id = items.item_id
-         WHERE orders.user_id = ?"
+         JOIN order_items ON orders.order_id = order_items.order_id
+         JOIN items ON order_items.item_id = items.item_id
+         WHERE orders.user_id = ?
+         ORDER BY orders.order_id DESC"
     );
-
     $statement->execute([$_SESSION["user_id"]]);
-    $orders = $statement->fetchAll();
+    $orderItems = $statement->fetchAll();
+    $lastOrderId = null;
 
-    foreach ($orders as $order):
+    foreach ($orderItems as $orderItem):
+        if ($lastOrderId !== $orderItem["order_id"]):
+            if ($lastOrderId !== null) {
+                echo "</ul>";
+            }
+            echo "<h3>Bestelling #" . (int) $orderItem["order_id"] . "</h3><ul>";
+            $lastOrderId = $orderItem["order_id"];
+        endif;
     ?>
-
-        <p>
-            <?php echo htmlspecialchars($order["name"]); ?>
-
-            - €<?php echo number_format($order["price"], 2, ",", "."); ?>
-        </p>
+        <li>
+            <?php echo htmlspecialchars($orderItem["name"]); ?>
+            - <?php echo (int) $orderItem["quantity"]; ?>x
+        </li>
 
     <?php endforeach; ?>
+    <?php if ($lastOrderId !== null) echo "</ul>"; ?>
 
 <?php endif; ?>

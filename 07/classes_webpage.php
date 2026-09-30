@@ -8,7 +8,7 @@ class WebPage {
         $this->title = $title;
     }
 
-    public function showHeader(): void
+    public function showHeader()
     {
         echo "<!DOCTYPE html>\n";
         echo "<head>\n";
@@ -17,12 +17,12 @@ class WebPage {
         echo "<body>\n";
     }  
 
-    public function showContent(string $content): void
+    public function showContent(string $content)
     {
         echo "  <main>" . $content . "</main>\n";
     }   
 
-    public function showFooter(): void
+    public function showFooter()
     {
         echo "  <footer>\n";
         echo "    <p> Pagina is gemaakt op " . date('d-m-Y'). "</p>\n";

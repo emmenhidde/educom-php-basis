@@ -6,8 +6,12 @@ class Animal {
     public function __construct($name) {
         $this->name = $name;
     }
-
+// We zullen het morgen op kantoor hebben over hoe we dit gebruik van de placeholder kunnen overslaan
     public function talk() {
+        return '?';
+    }
+
+    public function species() {
         return '?';
     }
 
@@ -21,6 +25,10 @@ class Animal {
 }
 
 class Cat extends Animal {
+    public function species() {
+        return 'Kat';
+    }
+
     public function talk() {
         return 'Miauw';
     }
@@ -31,6 +39,10 @@ class Cat extends Animal {
 }
 
 class Dog extends Animal {
+    public function species() {
+        return 'Hond';
+    }
+
     public function talk() {
         return 'Woef';
     }
@@ -45,6 +57,10 @@ class Dog extends Animal {
 }
 
 class Poedel extends Dog {
+    public function species() {
+        return 'Poedel';
+    }
+
     public function talk() {
         return 'Waf';
     }
@@ -85,6 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <?php if ($selectedAnimal !== null): ?>
     <h3><?php echo htmlspecialchars($selectedAnimal->name); ?></h3>
 
+    <p>Diersoort: <?php echo htmlspecialchars($selectedAnimal->species()); ?></p>
     <p>Zegt: <?php echo htmlspecialchars($selectedAnimal->talk()); ?></p>
     <p>Eet: <?php echo htmlspecialchars($selectedAnimal->eats()); ?></p>
     <p>Blaft: <?php echo $selectedAnimal->barks() ? 'ja' : 'nee'; ?></p>

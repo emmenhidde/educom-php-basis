@@ -4,13 +4,6 @@ $oneWeek = 60 * 60 * 24 * 7;
 
 ini_set('session.gc_maxlifetime', $oneWeek);
 
-session_set_cookie_params([
-    'lifetime' => $oneWeek,
-    'path' => '/',
-    'httponly' => true,
-    'samesite' => 'Lax'
-]);
-
 session_start();
 
 if (

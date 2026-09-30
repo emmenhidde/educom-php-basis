@@ -4,13 +4,6 @@ $oneWeek = 60 * 60 * 24 * 7;
 
 ini_set('session.gc_maxlifetime', $oneWeek);
 
-session_set_cookie_params([ // zou niet nofdig moeten zijn voor deze functionaliteit
-    'lifetime' => $oneWeek,
-    'path' => '/',
-    'httponly' => true,
-    'samesite' => 'Lax'
-]);
-
 session_start();
 
 if (
@@ -66,14 +59,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             break;
 
         case 'checkout':
-            // Demo only: no order or payment is processed.
             $_SESSION['cart'] = [];
 
             header('Location: winkelwagen.php', true, 303);
             exit;
     }
 
-    // Prevent repeating the action when refreshing.
     header('Location: cart.php', true, 303);
     exit;
 }
