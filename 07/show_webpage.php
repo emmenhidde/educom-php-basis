@@ -1,6 +1,6 @@
 <?php
 
-require_once 'classes_webpage.php';
+require 'classes_webpage.php';
 
 $pagina = new WebPage("Mijn Eerste Pagina");
 

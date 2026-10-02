@@ -1,25 +1,9 @@
 <?php
 
-require_once __DIR__ . '/class_shoppingcart.php';
+require __DIR__ . '/sessionKeeper.php';
+require __DIR__ . '/class_shoppingcart.php';
 
-$oneWeek = 60 * 60 * 24 * 7;
-
-ini_set('session.gc_maxlifetime', $oneWeek);
-
-session_start();
-
-if (
-    isset($_SESSION['last_activity']) &&
-    time() - $_SESSION['last_activity'] > $oneWeek
-) {
-    $_SESSION = [];
-}
-
-$_SESSION['last_activity'] = time();
-
-if (!isset($_SESSION['cart'])) {
-    $_SESSION['cart'] = [];
-}
+SessionKeeper::start();
 
 $shoppingCart = new ShoppingCart($_SESSION['cart']);
 

@@ -1,19 +1,20 @@
 <?php
 
-require_once __DIR__ . '/class_shoppingcart.php';
+require __DIR__ . '/sessionKeeper.php';
+require __DIR__ . '/class_shoppingcart.php';
 
-session_start();
+SessionKeeper::start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (($_POST['action'] ?? '') === 'empty') {
-        $_SESSION = [];
-        session_destroy();
+        SessionKeeper::clear();
     }
 
     header('Location: cartOOP.php', true, 303);
+    exit;
 }
 
-$shoppingCart = new ShoppingCart($_SESSION['cart'] ?? []);
+$shoppingCart = new ShoppingCart($_SESSION['cart']);
 $cartItems = $shoppingCart->getCart();
 $totaal = 0;
 
