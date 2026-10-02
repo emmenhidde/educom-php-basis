@@ -37,7 +37,7 @@ $grizzly = new Grizzly('Bruno', 'bergen');
 echo $bear . "<br><br>" ;
 echo $grizzly . "<br><br><br>";
 
-echo "This is a var_dump";
+echo "Dit is een var_dump:<br>";
 var_dump($bear);
 echo "<br>";
 var_dump($grizzly);

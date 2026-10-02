@@ -58,15 +58,15 @@ class User implements Identifier
 	{
 		// Toont het ID, de bestandstype-status en de foto.
 		echo '<main class="passport-card">';
-		echo '<h1>Paspoort</h1>';
+		echo '<h1>Identiteitsbewijs</h1>';
 		echo '<section class="passport-details">';
-		echo '<h2>Identificatie</h2>';
 		echo '<p><strong>ID:</strong> ' . $this->getId() . '</p>';
 		echo '</section>';
 		echo '<section class="passport-details">';
-		echo '<h2>Paspoortafbeelding</h2>';
+		echo '<h2>Identificatiebestand</h2>';
 		$this->showImage();
 		echo '</section>';
 		echo '</main>';
 	}
 }
+
