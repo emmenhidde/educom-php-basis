@@ -20,7 +20,7 @@ function validPassword(string $password): bool
 
 function validUsername(string $username): bool
 {
-    return preg_match('/\A[A-Za-z]{1,50}\z/', $username) === 1;
+    return preg_match('/\A[A-Za-z]{4,15}\z/', $username) === 1;
 }
 
 function registerUser(mysqli $database, string $username, string $password): bool

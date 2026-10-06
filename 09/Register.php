@@ -18,8 +18,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $username = trim($submittedUsername);
 
-        if (preg_match('/\A[A-Za-z]{1,50}\z/', $username) !== 1) {
-            $usernameError = 'De gebruikersnaam mag alleen letters (a-z en A-Z) bevatten.';
+        if (preg_match('/\A[A-Za-z]{4,15}\z/', $username) !== 1) {
+            $usernameError = 'De gebruikersnaam moet 4 tot 15 letters bevatten.';
         } elseif (!validPassword($password)) {
             $passwordError = 'Het wachtwoord moet 6 tot 15 tekens bevatten en mag alleen letters en cijfers bevatten.';
         } elseif (registerUser($mysqli, $username, $password)) {

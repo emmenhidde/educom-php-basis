@@ -8,3 +8,6 @@ De browser krijgt alleen de sessie-ID.
 
 Een sessie past beter bij de toepassing in les 09, omdat de server zo bijhoudt wie succesvol is ingelogd. 
 Een losse cookie met een naam kan de gebruiker zelf aanpassen en bewijst niet wie diegene is. 
+
+
+Session gebruikt ook een cookie bij de user.
