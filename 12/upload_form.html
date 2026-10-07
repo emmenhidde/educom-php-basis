@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>Bestand uploaden</title>
+</head>
+<body>
+    <h1>Afbeelding uploaden</h1>
+    <form action="./upload_file.php" method="post" enctype="multipart/form-data">
+        <label for="file">Kies een afbeelding:</label>
+        <input type="file" name="file" id="file" accept="image/jpeg,image/png,image/gif" required>
+        <button type="submit">Uploaden</button>
+    </form>
+</body>
+</html>
