@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/DBconnect.php';
-require_once __DIR__ . '/Person.php';
 
+require __DIR__ . '/Person.php';
 require __DIR__ . '/User.class.php';
 
 $connectedDB = DBConnect::getInstance();

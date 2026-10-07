@@ -6,7 +6,7 @@
 </head>
 <body>
     <h1>Afbeelding uploaden</h1>
-    <form action="./upload_file.php" method="post" enctype="multipart/form-data">
+    <form action="./upload_file.php" method="post" enctype="multipart/form-data" accept = "image/*">
         <label for="file">Kies een afbeelding:</label>
         <input type="file" name="file" id="file" accept="image/jpeg,image/png,image/gif" required>
         <button type="submit">Uploaden</button>

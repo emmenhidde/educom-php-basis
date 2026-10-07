@@ -9,6 +9,8 @@ SessionKeeper::start();
 $user = new User(DBConnect::getInstance());
 $message = '';
 
+// try exept toevoegen om dubbele usernaeme op te vangen
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
 
@@ -33,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $message = 'Onjuiste gebruikersnaam of wachtwoord.';
                 }
             } elseif ($action === 'register') {
-                if ($user->insert($username, $password)) {
+                if ($user->insert($username, $password)) { //check if username in DB
                     session_regenerate_id(true);
                     $_SESSION['username'] = $username;
                     $message = 'Account aangemaakt en ingelogd.';
