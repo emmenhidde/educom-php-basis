@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Persoonsinformatie</title>
+</head>
+<body>
+    <h1>Persoonsinformatie</h1>
+
+    <form action="persoonsinfoCheck.php" method="post" novalidate>
+        <label for="voornaam">Voornaam:</label>
+        <input id="voornaam" name="voornaam">
+        <script>
+            //check if the first letter is capitalized, //if not, capitalize it after the user has finished typing
+            document.getElementById('voornaam').addEventListener('blur', function() {
+                let value = this.value;
+                this.value = value.charAt(0).toUpperCase() + value.slice(1);
+            });
+        </script>
+        <br>
+
+        <label for="achternaam">Achternaam:</label>
+        <input id="achternaam" name="achternaam">
+        <script>
+            //check if the first letter is capitalized, //if not, capitalize it after the user has finished typing
+            document.getElementById('achternaam').addEventListener('blur', function() {
+                let value = this.value;
+                this.value = value.charAt(0).toUpperCase() + value.slice(1);
+            });
+        </script>
+        <br>
+
+        <label for="adres">Adres:</label>
+        <input id="adres" name="adres">
+        <script>
+            //check if the first letter is capitalized, //if not, capitalize it after the user has finished typing
+            document.getElementById('adres').addEventListener('blur', function() {
+                let value = this.value;
+                this.value = value.charAt(0).toUpperCase() + value.slice(1);
+            });
+        </script>
+        <br>
+
+        <label for="postcode">Postcode:</label>
+        <input id="postcode" name="postcode">
+        <script>
+            //Check if the postcode is in the correct REGEX format (1234 AB), if not, show an alert
+            document.getElementById('postcode').addEventListener('blur', function() {
+                let value = this.value;
+                let postcodeRegex = /^[1-9][0-9]{3}\s?[A-Z]{2}$/i;
+                if (!postcodeRegex.test(value)) {
+                    alert("Voer een geldige postcode in (bijvoorbeeld: 1234 AB)");
+                }
+            });
+        </script>
+        <br>
+
+        <label for="telefoon">Telefoon:</label>
+        <input id="telefoon" name="telefoon">
+        <script>
+            //Check if the phone number is in the correct format (10 digits), if not, show an alert
+            document.getElementById('telefoon').addEventListener('blur', function() {
+                let value = this.value;
+                let phoneRegex = /^(?:\+31|0031|0)?([1-9][0-9]{8})$/;
+                if (!phoneRegex.test(value)) {
+                    alert("Voer een geldig telefoonnummer in (10 cijfers)");
+                }
+            });
+        </script>
+        <br>
+
+        <label for="email">E-mail:</label>
+        <input id="email" name="email">
+        <script>
+            //Check if the email is in the correct format, if not, show an alert
+            document.getElementById('email').addEventListener('blur', function() {
+                let value = this.value;
+                let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                if (!emailRegex.test(value)) {
+                    alert("Voer een geldig e-mailadres in (bijvoorbeeld: example@example.com)");
+                }
+            });
+        </script>
+        <br>
+
+        <button type="submit">Controleren</button>
+    </form>
+</body>
+</html>
